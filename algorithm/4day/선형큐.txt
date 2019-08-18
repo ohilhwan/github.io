@@ -1,0 +1,51 @@
+#include<stdio.h>
+#define MAX 1000
+int queue[MAX];
+int front;
+int rear;
+int isFull() {
+	return rear == MAX;
+}
+int isEmpty() {
+	return front == rear;
+}
+
+void enQ(int data) {
+	if (isFull()) {
+		puts("queue overflow!!");
+	}
+	else {
+		queue[rear++] = data;
+	}
+}
+//int deQ(int * val) {
+int deQ() {
+	
+	if (isEmpty()) {
+		puts("queue underflow!!");
+		return -1;
+	}
+	else {
+		return queue[front++];
+	}
+	
+}
+void print() {
+	printf("[");
+	for (int i = front; i < rear; i++) {
+		printf("%d ", queue[i]);
+	}
+	puts("]");
+}
+int main() {
+	print();
+	enQ(10);
+	print();
+	enQ(30);
+	print();
+	enQ(20);
+	print();
+	printf("deQ : %d\n", deQ());
+	print();
+	return 0;
+}

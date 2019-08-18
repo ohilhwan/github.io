@@ -1,0 +1,82 @@
+#include <stdio.h>
+#define NMAX 50
+#define MMAX 100
+char codeChk[10] = { 0x0D, //0
+0x19, //1
+0x13, //2
+0x3D, //3
+0x23, //4
+0x31, //5
+0x2F, //6
+0x3B, //7
+0x37, //8
+0x0B };//9
+
+int main() {
+	freopen("input.txt", "r", stdin);
+	char data[NMAX][MMAX + 1];
+	int tc;
+	int N, M;
+	int sX, eX, eY;
+	int num, res, len;
+	int result, sum;
+	int tempNum[8];
+	int ansNum[8];
+
+	scanf("%d", &tc);
+
+	for (int testCase = 1; testCase <= tc; testCase++) {
+
+		scanf("%d%d", &N, &M);
+
+		for (int i = 0; i < N; i++) {
+			scanf("%s", data[i]);
+		}
+
+		for (int i = N - 1; i >= 0; i--) {
+			for (int j = M - 1; j >= 0; j--) {
+				if (data[i][j] == '1') {
+					eY = i;
+					eX = j;
+					goto exit;
+				}
+			}
+		}
+	exit:
+		sX = eX - 55;
+		len = 0;
+		for (int i = sX; i <= eX; i += 7) {
+			num = 0;
+			res = 0;
+			for (int j = 0; j < 7; j++) {
+				num = data[eY][i + j]-'0';
+//				if (num){
+					num = num << 7 - j - 1;
+					res = res | num;
+//				}
+			}
+			tempNum[len++] = res;
+		}
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (tempNum[i] == codeChk[j]) {
+					ansNum[i] = j;
+					break;
+				}
+			}
+		}
+		result = (ansNum[0] + ansNum[2] + ansNum[4] + ansNum[6]) * 3 + ansNum[1] + ansNum[3] + ansNum[5] + ansNum[7];
+		sum = 0;
+		for (int i = 0; i < 8; i++) {
+			sum = sum + ansNum[i];
+		}
+		if (result % 10) {
+			sum = 0;
+		}
+		printf("#%d %d\n", testCase, sum);
+	}
+	return 0;
+}
+
+

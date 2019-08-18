@@ -1,0 +1,143 @@
+/*
+6 11
+1 2 3
+1 3 5
+2 3 2
+2 4 6
+3 2 1
+3 4 4
+3 5 6
+4 5 2
+4 6 3
+5 1 3
+5 6 6
+*/
+#include<stdio.h>
+#define MAX 101
+#define INF 987654321
+int g[MAX][MAX];
+int dist[MAX];
+int p[MAX];
+int queue[MAX*MAX];
+int front, rear;
+int V, E;
+void init() {
+	for (int i = 1; i <= V; i++) {
+		dist[i] = INF;
+		p[i] = 0;
+	}
+}
+void pathPrint(int idx) {
+	if (idx == 0) {
+		return;
+	}
+	pathPrint(p[idx]);
+	printf("%d ", idx);
+}
+void iter(int start, int end) {
+	init();
+	dist[start] = 0;
+	for (int i = 1; i <= V; i++) {//Ãâ¹ßÁö
+		for (int j = 1; j <= V; j++) {//µµÂøÁö
+			if (dist[j] > dist[i] + g[i][j]) {
+				dist[j] = dist[i] + g[i][j];
+				p[j] = i;
+			}
+		}
+	}
+	printf("idx\t:\t");
+	for (int i = 1; i <= V; i++) {
+		printf("%d\t", i);
+	}
+	puts("");
+	printf("dist\t:\t");
+	for (int i = 1; i <= V; i++) {
+		printf("%d\t", dist[i]);
+	}
+	puts("");
+	printf("p\t:\t");
+	for (int i = 1; i <= V; i++) {
+		printf("%d\t", p[i]);
+	}	puts("");
+
+	printf("path : ");
+	pathPrint(end);
+	puts("");
+}
+void bfs(int start, int end) {
+	init();
+	dist[start] = 0;
+	queue[rear++] = start;
+	int u;
+	while (front != rear) {
+		u = queue[front++];
+
+		for (int j = 1; j <= V; j++) {//µµÂøÁö
+			if (dist[j] > dist[u] + g[u][j]) {
+				dist[j] = dist[u] + g[u][j];
+				p[j] = u;
+				queue[rear++] = j;
+			}
+		}
+
+	}
+	printf("idx\t:\t");
+	for (int i = 1; i <= V; i++) {
+		printf("%d\t", i);
+	}
+	puts("");
+	printf("dist\t:\t");
+	for (int i = 1; i <= V; i++) {
+		printf("%d\t", dist[i]);
+	}
+	puts("");
+	printf("p\t:\t");
+	for (int i = 1; i <= V; i++) {
+		printf("%d\t", p[i]);
+	}	puts("");
+
+	printf("path : ");
+	pathPrint(end);
+	puts("");
+}
+int main() {
+	freopen("input.txt", "r", stdin);
+	scanf("%d %d", &V, &E);
+	for (int i = 0; i < E; i++) {
+		int sn, en, val;
+		scanf("%d %d %d", &sn, &en, &val);
+		g[sn][en] = val;
+	}
+#if 0
+	for (int i = 1; i <= V; i++) {
+		for (int j = 1; j <= V; j++) {
+			printf("%d ", g[i][j]);
+		}
+		puts("");
+	}
+#endif
+	for (int i = 1; i <= V; i++) {
+		for (int j = 1; j <= V; j++) {
+			if (i != j && g[i][j] == 0) {
+				g[i][j] = INF;
+			}
+		}
+	}
+#if 0
+	puts("========");
+	for (int i = 1; i <= V; i++) {
+		for (int j = 1; j <= V; j++) {
+			if (g[i][j] == INF) {
+				printf("- ");
+			}
+			else {
+				printf("%d ", g[i][j]);
+			}
+		}
+		puts("");
+	}
+#endif
+	iter(1, 6);
+	bfs(1, 6);
+	return 0;
+}

@@ -1,0 +1,144 @@
+#include <stdio.h>
+#define MAX 101
+int src[MAX] = {0,1,2,3,4,5,6,7,8,9,10};
+int a[MAX];
+int n;
+int key;
+int cnt;
+int reCnt;
+void print() {
+	cnt++;
+	int sum = 0;
+	for (int i = 1; i <= n; i++) {
+		if (a[i]) {
+			sum += src[i];
+		}
+	}
+	if (sum <= key) {
+		reCnt++;
+		printf("{");
+		for (int i = 1; i <= n; i++) {
+			if (a[i]) {
+				printf("%d ", src[i]);
+			}
+		}
+		puts("}");
+	}
+}
+void btr(int k) {
+	if (k == n) {
+		print();
+		return;
+	}
+	k++;
+
+	a[k] = 0;
+	btr(k);
+	a[k] = 1;
+	btr(k);
+}
+int getSum(int k) {
+	int sum = 0;
+	for (int i = 1; i <= k; i++) {
+		if (a[i]) {
+			sum += src[i];
+		}
+	}
+	return sum;
+}
+void btr2(int k) {
+	if (getSum(k) > key) {
+		return;
+	}
+	if (k == n) {
+		print();
+		return;
+	}
+	k++;
+
+	a[k] = 0;
+	btr2(k);
+	a[k] = 1;
+	btr2(k);
+}
+void btr3(int k, int sum) {
+	if (sum > key) {
+		return;
+	}
+	if (k == n) {
+		print();
+		return;
+	}
+	k++;
+
+	a[k] = 0;
+	btr3(k, sum);
+	a[k] = 1;
+	btr3(k, sum + src[k]);
+}
+void btr4(int k, int sum) {
+	if (sum > key) {
+		return;
+	}
+	if (k == n) {
+//		if (sum <= key) {
+			reCnt++;
+	//	}
+		return;
+	}
+	k++;
+
+//	a[k] = 0;
+	btr4(k, sum);
+//	a[k] = 1;
+	btr4(k, sum + src[k]);
+}
+
+void btr5(int k, int sum) {
+	if (sum > key) {
+		return;
+	}
+	if (sum == key) {
+		reCnt++;
+		return;
+	}
+
+	if (k == n) {
+		return;
+	}
+	k++;
+
+	btr5(k, sum);
+	btr5(k, sum + src[k]);
+}
+void btr6(int k, int sum, int reSum) {
+	if (sum > key) {
+		return;
+	}
+	if (sum == key) {
+		reCnt++;
+		return;
+	}
+	if (sum + reSum < key) {
+		return;
+	}
+	if (k == n) {
+		return;
+	}
+	k++;
+
+	btr6(k, sum, reSum - src[k]);
+	btr6(k, sum + src[k], reSum - src[k]);
+}
+int main() {
+	n = MAX;
+	key = 5000;
+	int reSum = 0;
+	for (int i = 1; i < n; i++) {
+		src[i] = i;
+		reSum += src[i];
+	}
+	btr6(0,0,reSum);
+	printf("cnt : %d, reCnt : %d\n", cnt, reCnt);
+	return 0;
+}

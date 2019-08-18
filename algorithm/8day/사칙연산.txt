@@ -1,0 +1,72 @@
+#include <stdio.h>
+typedef struct node {
+	double N;
+	char oper;
+	int child1;
+	int child2;
+}Node;
+Node nodes[1001];
+double algo(int idx) {
+	double a, b;
+	if (nodes[idx].oper == 0) {
+		return nodes[idx].N;
+	}
+	a = algo(nodes[idx].child1);
+	b = algo(nodes[idx].child2);
+	if (nodes[idx].oper == '+') {
+		return a + b;
+	}
+	else if (nodes[idx].oper == '-') {
+		return a - b;
+	}
+	else if (nodes[idx].oper == '*') {
+		return a * b;
+	}
+	else if (nodes[idx].oper == '/') {
+		return a / b;
+	}
+}
+int my_atoi(char * sNum) {
+	char c;
+	int digit;
+	int val = 0;
+	int sign = 1;
+	if (*sNum == '-') {
+		sign = -1;
+		sNum++;
+	}
+	while (c = *sNum++) {
+		digit = c - '0';
+		val = val * 10 + digit;
+	}
+	return val * sign;
+}
+
+int main() {
+	freopen("input.txt", "r", stdin);
+	char data[20];
+	int num;
+	double result;
+	int N;
+	for (int testCase = 1; testCase <= 10; testCase++) {
+		scanf("%d", &N);
+		for (int i = 0; i < N; i++) {
+			scanf("%d %s", &num, data);
+			if (data[0] == '+' || data[0] == '-'
+				|| data[0] == '*' || data[0] == '/') {
+				nodes[num].oper = data[0];
+				scanf("%d %d", &nodes[num].child1, &nodes[num].child2);
+			}
+			else {
+				nodes[num].oper = 0;
+//				nodes[num].N = my_atoi(data);
+				sscanf(data, "%lf", &nodes[num].N);
+			}
+		}
+		result = algo(1);
+		printf("#%d %d\n", testCase, (int)result);
+		//  printf("#%d %.0f\n", testCase, result);
+
+	}
+	return 0;
+}

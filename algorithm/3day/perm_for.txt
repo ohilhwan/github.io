@@ -1,0 +1,36 @@
+#include <stdio.h>
+#define MAX 100
+char src[MAX] = { 0,'a', 98,99 };
+int main() {
+	int n = 3;
+	// n P r
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			if (i != j) {
+				printf("[%c : %c]\n", src[i], src[j]);
+			}
+		}
+	}
+	puts("============");
+	// n pi r
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			printf("[%c : %c]\n", src[i], src[j]);
+		}
+	}
+	puts("============");
+	// n C r
+	for (int i = 1; i < n; i++) {
+		for (int j = i + 1; j <= n; j++) {
+			printf("[%c : %c]\n", src[i], src[j]);
+		}
+	}
+	puts("============");
+	// n H r
+	for (int i = 1; i <= n; i++) {
+		for (int j = i; j <= n; j++) {
+			printf("[%c : %c]\n", src[i], src[j]);
+		}
+	}
+	return 0;
+}

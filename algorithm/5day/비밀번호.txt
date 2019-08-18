@@ -1,0 +1,50 @@
+#include <stdio.h>
+#define MAX 101
+
+
+int main() {
+	freopen("input.txt", "r", stdin);
+	int len;
+	char str[MAX];
+	char stack[MAX];
+	int top;
+	for (int testCase = 1; testCase <= 10; testCase++) {
+		scanf("%d %s", &len, str);
+		top = 0;
+		int i = 0;
+
+#if 0
+		stack[top++] = str[i++];
+
+		while (str[i]) {
+			if (stack[top - 1] == str[i]) {
+				top--;
+			}
+			else
+			{
+				stack[top++] = str[i];
+			}
+			i++;
+		}
+#endif
+#if 1
+		stack[top++] = str[0];
+
+		for (i = 1; i < len; i++) {
+			if (stack[top-1] == str[i]) {
+				top--;
+			}
+			else
+			{
+				stack[top++] = str[i];
+			}
+		}
+#endif
+		stack[top] = 0;
+		printf("#%d ", testCase);
+		//		for (i = 0; i < top; i++) {printf("%c", stack[i]);}puts("");
+		puts(stack);
+	}
+
+	return 0;
+}

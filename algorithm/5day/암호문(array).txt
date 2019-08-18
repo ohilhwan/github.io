@@ -1,0 +1,60 @@
+#include<stdio.h>
+#include<time.h>
+int data[10000000];
+
+int main() {
+	time_t start = clock();
+	freopen("input.txt", "r", stdin);
+	int cnt = 0;
+	for (int testCase = 1; testCase <= 10; testCase++) {
+		scanf("%d", &cnt);
+
+		for (int i = 0; i < cnt; i++) {
+			scanf("%d", &data[i]);
+		}
+		int k = 0;
+		char oper;
+		scanf("%d", &k);
+		while (k--) {
+			scanf(" %c", &oper);
+			int x, y, s;
+			if (oper == 'I') {
+				scanf("%d", &x);
+				scanf("%d", &y);
+				for (int i = cnt - 1; i >= x; i--) {
+					data[i + y] = data[i];
+				}
+				cnt += y;
+				for (int i = 0; i < y; i++) {
+					scanf("%d", &data[x + i]);
+				}
+			}
+			else if (oper == 'A') {
+				scanf("%d", &y);
+				for (int i = 0; i < y; i++)
+				{
+					scanf("%d", &data[cnt + i]);
+				}
+				cnt += y;
+			}
+			else if (oper == 'D') {
+				scanf("%d", &x);
+				scanf("%d", &y);
+				for (int i = x; i < cnt - y; i++)
+				{
+					data[i] = data[y + i];
+				}
+				cnt -= y;
+			}
+		}
+
+		printf("#%d ", testCase);
+		for (int i = 0; i < cnt && i < 10; i++) {
+			printf("%d ", data[i]);
+		}
+		puts("");
+	}
+	time_t end = clock();
+	printf("time : %f\n", (double)(end - start));
+	return 0;
+}

@@ -1,0 +1,32 @@
+#include<stdio.h>
+#define MAX 5
+int queue[MAX];
+int front;
+int rear;
+void print() {
+	printf("[");
+	for (int i = 0; i < MAX; i++) {
+		printf("%d ", queue[i]);
+	}
+	puts("]");
+}
+int main() {
+	rear = (rear + 1) % MAX;
+	queue[rear] = 10;
+	rear = (rear + 1) % MAX;
+	queue[rear] = 20;
+	rear = (rear + 1) % MAX;
+	queue[rear] = 30;
+	rear = (rear + 1) % MAX;
+	queue[rear] = 40;
+#if 0
+	rear = (rear + 1) % MAX;
+	queue[rear] = 50;
+#endif
+	print();
+//	rear = (rear + 1) % MAX;
+//	printf("isFull : %d\n", (front==rear));
+	front = (front + 1) % MAX;
+	printf("deQ : %d\n", queue[front]);
+	return 0;
+}

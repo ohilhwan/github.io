@@ -1,0 +1,174 @@
+#include <stdio.h>
+//#include <time.h>
+int buf[5000];
+
+class DL_List {
+private:
+	class Node {
+	public:
+		Node *prev;
+		Node *next;
+		int data;
+	};
+	Node *front;
+	Node *rear;
+	int count;
+public:
+	DL_List() {
+		this->front = new Node();
+		this->rear = new Node();
+		this->front->next = NULL;
+		this->front->prev = this->rear;
+		this->rear->next = this->front;
+		this->rear->prev = NULL;
+		this->count = 0;
+	}
+
+	~DL_List() {
+		Node *temp = this->front->prev;
+		while (temp != NULL) {
+			delete temp->next;
+			temp = temp->prev;
+		}
+		delete this->rear;
+	}
+
+	bool insertF(int x, int y, int f[]) {
+
+		Node *pointer = this->front;
+		Node *head;
+		Node *tail;
+		Node *left;
+		Node *right;
+
+		Node *temp;
+		for (int i = 0; i < x; i++) {
+			pointer = pointer->prev;
+		}
+		left = pointer;
+		right = pointer->prev;
+
+		temp = new Node();
+		head = temp;
+		temp->data = f[0];
+		for (int i = 1; i < y; i++) {
+			temp->prev = new Node();
+			temp->prev->next = temp;
+			temp = temp->prev;
+			temp->data = f[i];
+		}
+		tail = temp;
+
+		left->prev = head;
+		head->next = left;
+		right->next = tail;
+		tail->prev = right;
+
+		this->count += y;
+
+		return true;
+	}
+
+	bool deleteF(int x, int y) {
+		Node *pointer = this->front;
+		Node *left;
+		Node *right;
+		for (int i = 0; i < x; i++) {
+			pointer = pointer->prev;
+		}
+		left = pointer;
+		pointer = pointer->prev->prev;
+		for (int i = 0; i < y; i++) {
+			delete pointer->next;
+			pointer = pointer->prev;
+		}
+		right = pointer->next;
+
+		left->prev = right;
+		right->next = left;
+
+		this->count -= y;
+
+		return true;
+	}
+
+	bool appendF(int y, int f[]) {
+		Node *temp;
+
+		for (int i = 0; i < y; i++) {
+			temp = new Node();
+			temp->data = f[i];
+			temp->next = this->rear->next;
+			temp->prev = this->rear;
+			this->rear->next->prev = temp;
+			this->rear->next = temp;
+			this->count++;
+		}
+
+		return true;
+	}
+
+	void print(int num) {
+		Node *pointer = this->front;
+
+		printf("#%d ", num);
+		for (int i = 0; i < 10; i++) {
+			pointer = pointer->prev;
+			printf("%d ", pointer->data);
+		}
+		puts("");
+	}
+
+
+};
+int main() {
+	//	time_t start = clock();
+	freopen("input.txt", "r", stdin);
+
+	DL_List *DL;
+	int cnt;
+	int x, y;
+	char ch;
+
+	for (int testCase = 1; testCase <= 10; testCase++) {
+		DL = new DL_List();
+		scanf("%d", &cnt);
+		for (int i = 0; i < cnt; i++) {
+			scanf("%d", &buf[i]);
+		}
+		DL->appendF(cnt, buf);
+
+		scanf("%d", &cnt);
+
+		for (int i = 0; i < cnt; i++) {
+			scanf(" %c", &ch);
+			if (ch == 'I') {
+				scanf("%d", &x);
+				scanf("%d", &y);
+				for (int j = 0; j < y; j++) {
+					scanf("%d", &buf[j]);
+				}
+				DL->insertF(x, y, buf);
+			}
+			else if (ch == 'D') {
+				scanf("%d", &x);
+				scanf("%d", &y);
+				DL->deleteF(x, y);
+			}
+			else if (ch == 'A') {
+				scanf("%d", &y);
+				for (int j = 0; j < y; j++) {
+					scanf("%d", &buf[j]);
+				}
+				DL->appendF(y, buf);
+			}
+
+		}
+		DL->print(testCase);
+		delete DL;
+	}
+
+	//	time_t end = clock();
+	//	printf("time : %f\n",(double)(end-start));
+	return 0;
+}

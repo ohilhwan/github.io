@@ -1,0 +1,68 @@
+#include<stdio.h>
+#include<time.h>
+#define MAX 1001
+#define INF 1000000.0 * 1000000.0
+int N;
+int x[MAX];
+int y[MAX];
+double E;
+double g[MAX][MAX];
+double dist[MAX];
+int visited[MAX];
+
+void prim(int testCase) {
+	scanf("%d", &N);
+	for (int i = 1; i <= N; i++) { scanf("%d", &x[i]); }
+	for (int i = 1; i <= N; i++) { scanf("%d", &y[i]); }
+	scanf("%lf", &E);
+
+	for (int i = 1; i < N; i++) {
+		for (int j = i + 1; j <= N; j++) {
+			g[i][j] = g[j][i]
+				= E * ((double)(x[i] - x[j]) * (x[i] - x[j]) + (double)(y[i] - y[j]) *(y[i] - y[j]));
+		}
+	}
+	for (int i = 1; i <= N; i++) {
+		dist[i] = INF;
+		visited[i] = 1;
+	}
+
+	int u;
+	dist[1] = 0;
+	double min;
+	for (int i = 1; i < N; i++) {
+		min = INF;
+		for (int v = 1; v <= N; v++) {
+			if (visited[v] && dist[v] < min) {
+				min = dist[v];
+				u = v;
+			}
+		}
+		visited[u] = 0;
+		for (int v = 1; v <= N; v++) {
+			if (visited[v] && g[u][v] < dist[v]) {
+				dist[v] = g[u][v];
+			}
+		}
+	}
+	double sumCost = 0.0;
+	for (int i = 1; i <= N; i++) {
+		sumCost += dist[i];
+	}
+
+	printf("#%d %.0f\n", testCase, sumCost);
+}
+
+int main() {
+	time_t start = clock();
+	freopen("input.txt", "r", stdin);
+
+	int tc;
+	scanf("%d", &tc);
+	for (int testCase = 1; testCase <= tc; testCase++) {
+		prim(testCase);
+	}
+	time_t end = clock();
+	printf("time : %f\n", (double)(end - start));
+	return 0;
+}

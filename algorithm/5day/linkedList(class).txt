@@ -1,0 +1,136 @@
+#include <stdio.h>
+#include <malloc.h>
+class LinkedList {
+private:
+	class Node {
+	public :
+		int data;
+		Node * lLink;
+		Node * rLink;
+	};
+	Node * head;
+	Node * tail;
+	int cnt;
+
+public:
+
+	LinkedList() {
+		cnt = 0;
+		
+		head = new Node();
+		this->tail = new Node();
+
+		this->head->lLink = NULL;
+		this->head->rLink = tail;
+		this->tail->rLink = NULL;
+		this->tail->lLink = head;
+	}
+
+	~LinkedList() {
+		puts("¼Ò¸êÀÚ È£Ãâ");
+		Node * temp = head->rLink;
+
+		while (temp) {
+			delete(temp->lLink);
+			temp = temp->rLink;
+		}
+		delete(tail);
+	}
+	void print() {
+		Node * temp = head->rLink;
+		printf("[");
+		while (temp != tail) {
+			printf("%d ", temp->data);
+			temp = temp->rLink;
+		}
+		puts("]");
+	}
+	void appendF(int data) {
+		Node * newNode = (Node*)malloc(sizeof(Node));
+		newNode->data = data;
+		tail->lLink->rLink = newNode;
+		newNode->lLink = tail->lLink;
+		newNode->rLink = tail;
+		tail->lLink = newNode;
+		cnt++;
+	}
+	bool deleteF(int idx, int * d) {
+
+		if (idx >= cnt) {
+			puts("error");
+			return false;
+		}
+		else {
+			Node* pos = head;
+			for (int i = 0; i <= idx; i++) {
+				pos = pos->rLink;
+			}
+
+			pos->lLink->rLink = pos->rLink;
+			pos->rLink->lLink = pos->lLink;
+			*d = pos->data;
+			free(pos);
+			return true;
+		}
+
+
+	}
+	bool updateF(int idx, int data) {
+		if (idx >= cnt) {
+			puts("error");
+			return false;
+		}
+		else {
+			Node* pos = head;
+			for (int i = 0; i <= idx; i++) {
+				pos = pos->rLink;
+			}
+			pos->data = data;
+			return true;
+		}
+	}
+
+	void insertF(int idx, int data) {
+		if (idx > cnt) {
+			appendF(data);
+		}
+		else {
+			Node * newNode = (Node*)malloc(sizeof(Node));
+			newNode->data = data;
+
+			Node* pos = head;
+			for (int i = 0; i < idx; i++) {
+				pos = pos->rLink;
+			}
+			pos->rLink->lLink = newNode;
+			newNode->rLink = pos->rLink;
+			pos->rLink = newNode;
+			newNode->lLink = pos;
+			cnt++;
+		}
+
+	}
+};
+int main() {
+	int * buf[10];
+	/*
+	int n = 10;
+	LinkedList ** buf = (LinkedList**)malloc(sizeof(LinkedList*)*n);
+	for (int i = 0; i < n; i++) {
+		buf[i] = new LinkedList();
+	}
+	*/
+
+	LinkedList * list = new LinkedList();
+
+	list->appendF(100);
+	list->print();
+	list->insertF(3,200);
+	list->print();
+	list->insertF(1,300);
+	list->print();
+
+	delete list;
+
+	return 0;
+}

@@ -1,0 +1,31 @@
+#include <stdio.h>
+#define MAXN 101
+#define MAXW 1001
+int N;
+int money;
+int moneys[] = {0,1,4,6};
+int dpMemo[MAXW];
+
+void dp1() {
+#if 0
+#endif
+	
+	for (int i = 1; i <= money; i++) {
+		dpMemo[i] = 987654321;
+		for (int j = 1; j <= N; j++) {
+			if (i >= moneys[j]) {
+				if (dpMemo[i] > dpMemo[i - moneys[j]] + 1) {
+					dpMemo[i] = dpMemo[i - moneys[j]] + 1;
+				}
+			}
+		}
+	}
+}
+int main() {
+	N = 3;
+	money = 8;
+
+	dp1();
+	printf("min : %d\n", dpMemo[money]);
+	return 0;
+}
