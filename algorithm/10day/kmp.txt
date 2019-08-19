@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <string.h>
+
+#define STR_MAX 100
+char pat[] = "abcdabcef";
+char str[] = "ccccccabcdabcdabcefab";
+int failure[STR_MAX];
+int pLen, sLen;
+
+void createTable() {
+	int len = pLen - 1;
+	for (int i = 1, j = 0; i < len; i++) {
+
+		if (j > 0 && pat[i] != pat[j]) {
+			j = 0;
+		}
+		if (pat[i] == pat[j]) {
+			failure[i + 1] = ++j;
+		}
+	}
+
+}
+int kmp_match() {
+	int i = 0, j = 0;
+
+	while (i < sLen && j < pLen) {
+		if (str[i] == pat[j])
+			i++, j++;
+		else if (j == 0)
+			i++;
+		else
+			j = failure[j];
+	}
+
+	return ((j == pLen) ? (i - pLen) : -1);
+}
+
+
+int main(void) {
+	int i;
+	pLen = strlen(pat);
+	sLen = strlen(str);
+	createTable();
+	printf("kmp table [");
+
+	for (i = 0; i < pLen; i++)
+		printf("%d ", failure[i]);
+	puts("]");
+
+	printf("%d\n", kmp_match());
+
+	return 0;
+}
+

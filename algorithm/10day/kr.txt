@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <string.h>
+
+int power(int num, int n) {
+
+	int res = 1;
+
+	for (int i = n; i ; i--) {
+		res = res * num;
+	}
+
+	return res;
+}
+
+int makeHash(char arr[], int len) {
+	int res = 0;
+	int exp = 0;
+
+	for (int i = 0; i < len; i++) {
+		res += (arr[i]) * power(10, len - 1 - i);
+	}
+
+	return res;
+}
+
+int reHash(int key, int prevN, int nextN, int len) {
+	int res = key;
+
+	res = res - prevN * power(10, len - 1);
+	res = res * 10;
+	res += nextN;
+
+	return res;
+}
+int check(char* str, char * key) {
+	while (*key) {
+		if (*key != *str) {
+			return 0;
+		}
+		key++;
+		str++;
+	}
+	return 1;
+}
+int main() {
+	char str[] = "6843212431";
+	char keys[] = "4321";
+
+	int sLen = strlen(str);
+	int kLen = strlen(keys);
+	int hashKey = makeHash(keys, kLen);
+	int textKey = 0;
+
+	int i = 0;
+	int finded = -1;
+
+	int len = sLen - kLen + 1;
+
+	for (i = 0; i < len; i++) {
+
+		if (i == 0) {
+			textKey = makeHash(str, kLen);
+		}
+		else {
+			textKey = reHash(textKey, str[i - 1], str[i + kLen - 1], kLen);
+		}
+
+		if (hashKey == textKey) {
+			if (check(str + i, keys)) {
+				finded = i;
+				break;
+			}
+		}
+
+	}
+
+	printf("pattern is in %d \n", finded);
+
+	return 0;
+}
