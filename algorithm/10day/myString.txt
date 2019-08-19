@@ -1,0 +1,127 @@
+#include <stdio.h>
+
+int mystrlen(char * str) {
+	int len = 0;
+	while (*str++) {
+		len++;
+	}
+
+	return len;
+}
+void mystrcpy(char * src, char * dest) {
+	while (*dest++ = *src++);
+}
+int mystrcmp(char * s1, char * s2) {
+	int idx = 0;
+	while (s1[idx]) {
+		if (s1[idx] != s2[idx]) {
+			return s1[idx] - s2[idx];
+		}
+		idx++;
+	}
+	return s1[idx] - s2[idx];
+}
+
+int myatoi(char * sNum) {
+	int val = 0;
+	char ch;
+	int digit;
+	int sign = 1;
+	if (*sNum == '-') {
+		sign = -1;
+		sNum++;
+	}
+	while (ch = *sNum++) {
+		//	if (ch<'0' || ch>'9') {break;}
+		digit = ch - '0';
+		val = val * 10 + digit;
+	}
+
+	return val * sign;
+}
+
+
+int myatoi16(char * sNum) {
+	int val = 0;
+	char ch;
+	int digit;
+	int sign = 1;
+	if (*sNum == '-') {
+		sign = -1;
+		sNum++;
+	}
+	while (ch = *sNum++) {
+		if (ch>'9') {
+			digit = ch - 'a' + 10;
+		}
+		else {
+			digit = ch - '0';
+		}
+		val = val * 16 + digit;
+	}
+
+	return val * sign;
+}
+
+void myitoa(int iNum, char * sNum) {
+	int len=0;
+	while (iNum) {
+		sNum[len++] = iNum % 10 + '0';
+		iNum /= 10;
+	}
+	sNum[len] = 0;
+	int iLen = len / 2;
+	for (int i = 0; i < iLen; i++) {
+		int t = sNum[i];
+		sNum[i] = sNum[len - 1-i];
+		sNum[len - 1-i] = t;
+	}
+}
+int main() {
+	char buf[] = "123 abcd 10.5";
+
+	int iNum = 100;
+	char ch;
+	char str[10];
+	double d = 10.12345;
+	sscanf(buf, "%d", &iNum);
+	int k = 0;
+	while (buf[k++] != ' ');
+
+	sscanf(buf+k, "%c", &ch);
+
+	printf("iNum : %d\n", iNum);
+	printf("ch : %c\n", ch);
+
+
+
+#if 0
+	sprintf(buf, "%f", d);
+	puts(buf);
+#endif
+#if 0
+	sscanf(buf, "%d %c %s %lf", &iNum, &ch, str, &d);
+	printf("iNum : %d, ch : %c , str : %s, d : %lf\n", iNum, ch, str, d);
+#endif
+#if 0
+	char sNum[] = "123";
+	char buf[10];;
+	int iNum = myatoi(sNum);
+	printf("iNum : %d\n", iNum);
+	myitoa(iNum, buf);
+	puts(buf);
+#endif
+#if 0
+	char str1[] = "abcd";
+	char str2[] = "abc";
+	printf("cmp : %d\n", mystrcmp(str1, str2));
+#endif
+#if 0
+	char src[10] = "12345";
+	printf("len : %d\n", mystrlen(src));
+	char dest[10];
+	mystrcpy(src, dest);
+	puts(dest);
+#endif
+	return 0;
+}
