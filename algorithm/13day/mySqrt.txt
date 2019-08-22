@@ -1,0 +1,17 @@
+#include <stdio.h>
+#include <math.h>
+double mySqrt(double n){
+	double r = n / 2.0;
+	double temp = 0.0;
+	while (r != temp){
+		temp = r;
+		r = (r + n / r) / 2.0;
+	}
+	return r;
+}
+int main() {
+	double n = 3;
+	printf("root1 = %.15f\n", sqrt(n));
+	printf("root2 = %.15f\n", mySqrt(n));
+	return 0;
+}

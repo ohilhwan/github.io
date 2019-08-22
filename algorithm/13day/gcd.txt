@@ -1,0 +1,18 @@
+#include <stdio.h>
+int gcd(int p, int q) {
+	if (q == 0) {
+		return p;
+	}
+
+	return gcd(q, p%q);
+}
+int main() {
+	int a = 105;
+	int b = 30;
+
+	int g = gcd(a, b);
+	int l = a * b / g;
+	printf("gcd : %d\n", g);
+	printf("lcm : %d\n", l);
+	return 0;
+}

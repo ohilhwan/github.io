@@ -1,0 +1,82 @@
+#include<stdio.h>
+#include <time.h>
+#define MAX 1000
+#define INF 987654321
+typedef struct data {
+	int v, d;
+} Data;
+Data queue[MAX];
+int g[MAX][MAX], connCnt[MAX], visited[MAX];
+
+int main() {
+	time_t start = clock();
+	freopen("input.txt", "r", stdin);
+	int tc, N;
+	int temp;
+	int result, tempResult;
+	int front, rear;
+	int chk;
+	scanf("%d", &tc);
+
+	for (int testCase = 1; testCase <= tc; testCase++) {
+		chk = 1;
+		tempResult = 0;
+		result = INF;
+
+		scanf("%d", &N);
+
+		for (int i = 0; i < N; i++) {
+			connCnt[i] = 0;
+
+			for (int j = 0; j < N; j++) {
+				g[i][j] = 0;
+			}
+		}
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				scanf("%d", &temp);
+				if (temp) {
+					g[i][connCnt[i]++] = j;
+				}
+			}
+		}
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				visited[j] = 1;
+			}
+			tempResult = 0;
+			front = 0; rear = 0;
+			queue[rear].v = i;
+			queue[rear++].d = 0;
+			visited[i] = 0;
+			while (front != rear) {
+				Data u = queue[front++];
+				for (int j = 0; j < connCnt[u.v]; j++) {
+					int v = g[u.v][j];
+					if (visited[v]) {
+						queue[rear].v = v;
+						queue[rear].d = u.d + 1;
+						visited[v] = 0;
+						tempResult += queue[rear++].d;
+						if (tempResult >= result) {
+							goto exit;
+						}
+					}
+				}
+			}
+		exit:
+
+			if (tempResult < result) {
+				result = tempResult;
+			}
+
+		}
+		printf("#%d %d\n", testCase, result);
+	}
+	time_t end = clock();
+	printf("time : %f\n", (double)(end - start));
+
+	return 0;
+}
+
