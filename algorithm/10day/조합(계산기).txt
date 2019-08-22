@@ -1,0 +1,36 @@
+#include <stdio.h>
+#define MAX 101
+int dpMemo1[MAX][MAX];
+int dpMemo2[MAX][MAX];
+int comb(int n, int r) {
+	if (r == 0 || n == r) {
+		return 1;
+	}
+	if (dpMemo1[n][r] == 0) {
+		dpMemo1[n][r] = comb(n - 1, r - 1) + comb(n - 1, r);
+	}
+	return dpMemo1[n][r];
+}
+
+int comb_iter(int n, int r) {
+	
+	for (int i = 0; i <= n; i++) {
+		for (int j = 0; j <= r; j++) {
+
+			if (i == 0 || i == j) {
+				dpMemo2[i][j] = 1;
+			}
+			else {
+				dpMemo2[i][j] = dpMemo2[i - 1][j - 1] + dpMemo2[i - 1][j];
+			}
+		}
+	}
+	return dpMemo2[n][r];
+}
+int main() {
+	int n = 100;
+	int r = 2;
+	printf("%d C %d = %d\n", n, r, comb(n, r));
+	printf("%d C %d = %d\n", n, r, comb_iter(n, r));
+	return 0;
+}

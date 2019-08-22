@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <time.h>
+#define MAX 100
+int main() {
+	time_t start = clock();
+	freopen("input.txt", "r", stdin);
+	int tc;
+	char map[MAX][MAX + 1];
+	int length, max, x1, x2, y1, y2;
+	for (int testCase = 1; testCase <= 10; testCase++) {
+		max = 0;
+		scanf("%d", &tc);
+		for (int i = 0; i < MAX; i++) {
+			scanf("%s", map[i]);
+		}
+		for (int i = 0; i < MAX; i++) {
+			for (int j = 0; j < MAX; j++) {
+				length = 0;
+				x1 = j;
+				x2 = j + 1;
+				while (x1 > -1 && x2 < MAX) {
+					if (map[i][x1] == map[i][x2]) {
+						x1--;
+						x2++;
+						length += 2;
+					}
+					else {
+						break;
+					}
+				}
+				if (length > max) {
+					max = length;
+				}
+				x1 = j - 1;
+				x2 = j + 1;
+				length = 1;
+				while (x1 > -1 && x2 < MAX) {
+					if (map[i][x1] == map[i][x2]) {
+						x1--;
+						x2++;
+						length += 2;
+					}
+					else {
+						break;
+					}
+				}
+				if (length > max) {
+					max = length;
+				}
+			}
+		}
+		for (int i = 0; i < MAX; i++) {
+			for (int j = 0; j < MAX; j++) {
+				length = 0;
+				y1 = i;
+				y2 = i + 1;
+				while (y1 > -1 && y2 < MAX) {
+					if (map[y1][j] == map[y2][j]) {
+						y1--;
+						y2++;
+						length += 2;
+					}
+					else {
+						break;
+					}
+				}
+				if (length > max) {
+					max = length;
+				}
+				y1 = i - 1;
+				y2 = i + 1;
+				length = 1;
+				while (y1 > -1 && y2 < MAX) {
+					if (map[y1][j] == map[y2][j]) {
+						y1--;
+						y2++;
+						length += 2;
+					}
+					else {
+						break;
+					}
+				}
+				if (length > max) {
+					max = length;
+				}
+			}
+		}
+		printf("#%d %d\n", testCase, max);
+	}
+	time_t end = clock();
+	printf("time :  %f\n", (double)(end - start));
+	return 0;
+}
