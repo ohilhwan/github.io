@@ -58,10 +58,10 @@ int main() {
 #endif
 #if 1
 	n = 9;
-	print("Á¤·ÄÀü");
+	print("ÃÂ¤Â·Ã„Ã€Ã¼");
 	selectSort(n);
 //	bubbleSort(n);
-	print("Á¤·ÄÈÄ");
+	print("ÃÂ¤Â·Ã„ÃˆÃ„");
 #endif
 	return 0;
 }
