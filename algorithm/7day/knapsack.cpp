@@ -9,7 +9,7 @@ int dpMemo1[MAXW];
 int dpmemo2[MAXN][MAXW];
 
 void dp1() {
-	//º¸¼®ÀÌ ¹«ÇÑ´ë
+	//ÂºÂ¸Â¼Â®Ã€ÃŒ Â¹Â«Ã‡Ã‘Â´Ã«
 	for (int i = 1; i <= W; i++) {
 		for (int j = 1; j <= N; j++) {
 			if (i >= jw[j]) {
@@ -21,7 +21,7 @@ void dp1() {
 	}
 }
 void dp2() {
-	//º¸¼®ÀÌ 1°³
+	//ÂºÂ¸Â¼Â®Ã€ÃŒ 1Â°Â³
 	for (int i = 1; i <= N; i++) {
 		for (int j = 1; j <= W; j++) {
 			dpmemo2[i][j] = dpmemo2[i - 1][j];
